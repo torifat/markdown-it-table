@@ -8,7 +8,7 @@ jobs:
       - restore_cache:
           keys:
             - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn install
+      - run: yarn install --pure-lockfile
       - save_cache:
           key: yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
           paths:
