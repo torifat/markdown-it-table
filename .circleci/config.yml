@@ -19,5 +19,5 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "release" ]; then
               echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-              yarn publish
+              npm publish
             fi
