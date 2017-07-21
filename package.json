@@ -26,6 +26,6 @@
     "webpack": "^3.3.0"
   },
   "lint-staged": {
-    "*.js": ["prettier --write", "git add"]
+    "*.js": ["prettier --write --single-quote --trailing-comma es5", "git add"]
   }
 }

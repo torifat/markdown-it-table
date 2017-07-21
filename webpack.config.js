@@ -1,19 +1,19 @@
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  entry: "./src",
+  entry: './src',
   output: {
-    path: path.resolve("./dist"),
-    filename: "markdown-it-table.js",
-    libraryTarget: "commonjs2"
+    path: path.resolve('./dist'),
+    filename: 'markdown-it-table.js',
+    libraryTarget: 'commonjs2',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: "babel-loader"
-      }
-    ]
-  }
+        loader: 'babel-loader',
+      },
+    ],
+  },
 };

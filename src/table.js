@@ -128,7 +128,7 @@ module.exports = function table(state, startLine, endLine, silent) {
 
   lineText = getLine(state, startLine + 1);
 
-  columns = lineText.split("|");
+  columns = lineText.split('|');
   aligns = [];
   for (i = 0; i < columns.length; i++) {
     t = columns[i].trim();
@@ -146,22 +146,22 @@ module.exports = function table(state, startLine, endLine, silent) {
       return false;
     }
     if (t.charCodeAt(t.length - 1) === 0x3a /* : */) {
-      aligns.push(t.charCodeAt(0) === 0x3a /* : */ ? "center" : "right");
+      aligns.push(t.charCodeAt(0) === 0x3a /* : */ ? 'center' : 'right');
     } else if (t.charCodeAt(0) === 0x3a /* : */) {
-      aligns.push("left");
+      aligns.push('left');
     } else {
-      aligns.push("");
+      aligns.push('');
     }
   }
 
   lineText = getLine(state, startLine).trim();
-  if (lineText.indexOf("|") === -1) {
+  if (lineText.indexOf('|') === -1) {
     return false;
   }
   if (state.sCount[startLine] - state.blkIndent >= 4) {
     return false;
   }
-  columns = escapedSplit(lineText.replace(/^\||\|$/g, ""));
+  columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
 
   // header row will define an amount of columns in the entire table,
   // and align row shouldn't be smaller than that (the rest of the rows can)
@@ -174,33 +174,33 @@ module.exports = function table(state, startLine, endLine, silent) {
     return true;
   }
 
-  token = state.push("table_open", "table", 1);
+  token = state.push('table_open', 'table', 1);
   token.map = tableLines = [startLine, 0];
 
   // token     = state.push('thead_open', 'thead', 1);
   // token.map = [ startLine, startLine + 1 ];
 
-  token = state.push("tr_open", "tr", 1);
+  token = state.push('tr_open', 'tr', 1);
   token.map = [startLine, startLine + 1];
 
   for (i = 0; i < columns.length; i++) {
-    token = state.push("th_open", "th", 1);
+    token = state.push('th_open', 'th', 1);
     token.map = [startLine, startLine + 1];
     if (aligns[i]) {
-      token.attrs = [["style", "text-align:" + aligns[i]]];
+      token.attrs = [['style', 'text-align:' + aligns[i]]];
     }
 
-    token = state.push("paragraph_open", "p", 1);
-    token = state.push("inline", "", 0);
+    token = state.push('paragraph_open', 'p', 1);
+    token = state.push('inline', '', 0);
     token.content = columns[i].trim();
     token.map = [startLine, startLine + 1];
     token.children = [];
-    token = state.push("paragraph_close", "p", -1);
+    token = state.push('paragraph_close', 'p', -1);
 
-    token = state.push("th_close", "th", -1);
+    token = state.push('th_close', 'th', -1);
   }
 
-  token = state.push("tr_close", "tr", -1);
+  token = state.push('tr_close', 'tr', -1);
   // token     = state.push('thead_close', 'thead', -1);
 
   // token     = state.push('tbody_open', 'tbody', 1);
@@ -212,21 +212,21 @@ module.exports = function table(state, startLine, endLine, silent) {
     }
 
     lineText = getLine(state, nextLine).trim();
-    if (lineText.indexOf("|") === -1) {
+    if (lineText.indexOf('|') === -1) {
       break;
     }
     if (state.sCount[nextLine] - state.blkIndent >= 4) {
       break;
     }
-    columns = escapedSplit(lineText.replace(/^\||\|$/g, ""));
+    columns = escapedSplit(lineText.replace(/^\||\|$/g, ''));
 
-    token = state.push("tr_open", "tr", 1);
+    token = state.push('tr_open', 'tr', 1);
 
     let offset = 2;
     for (i = 0; i < columnCount; i++) {
-      token = state.push("td_open", "td", 1);
+      token = state.push('td_open', 'td', 1);
       if (aligns[i]) {
-        token.attrs = [["style", "text-align:" + aligns[i]]];
+        token.attrs = [['style', 'text-align:' + aligns[i]]];
       }
 
       // https://github.com/markdown-it/markdown-it/blob/e6f19eab4204122e85e4a342e0c1c8486ff40c2d/lib/rules_block/state_block.js#L25
@@ -235,19 +235,19 @@ module.exports = function table(state, startLine, endLine, silent) {
       // tShift => offsets of the first non-space characters (tabs not expanded)
       // sCount => indents for each line (tabs expanded)
       state.bMarks[nextLine] += offset;
-      offset += (columns[i] || "").length - 1;
+      offset += (columns[i] || '').length - 1;
       state.eMarks[nextLine] =
-        state.bMarks[nextLine] + (columns[i] || "").trim().length;
+        state.bMarks[nextLine] + (columns[i] || '').trim().length;
       state.lineMax = 1;
       state.md.block.tokenize(state, nextLine, nextLine + 1);
 
-      token = state.push("td_close", "td", -1);
+      token = state.push('td_close', 'td', -1);
     }
 
-    token = state.push("tr_close", "tr", -1);
+    token = state.push('tr_close', 'tr', -1);
   }
   // token = state.push('tbody_close', 'tbody', -1);
-  token = state.push("table_close", "table", -1);
+  token = state.push('table_close', 'table', -1);
 
   tableLines[1] = tbodyLines[1] = nextLine;
   state.line = nextLine;
