@@ -1,0 +1,31 @@
+{
+  "name": "markdown-it-table",
+  "version": "1.0.0",
+  "description": "Plugin for markdown-it markdown parser, adding table with nested block syntax support.",
+  "keywords": ["markdown-it-plugin", "markdown-it", "markdown", "table"],
+  "main": "dist/markdown-it-table.js",
+  "license": "MIT",
+  "author": "Rifat Nabi <@rifat>",
+  "scripts": {
+    "test": "jest",
+    "build": "webpack --optimize-minimize",
+    "precommit": "lint-staged",
+    "prepublish": "yarn run build"
+  },
+  "files": ["dist/"],
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "husky": "^0.14.3",
+    "jest": "^20.0.4",
+    "lint-staged": "^4.0.2",
+    "markdown-it": "^8.3.1",
+    "markdown-it-testgen": "^0.1.4",
+    "prettier": "^1.5.3",
+    "webpack": "^3.3.0"
+  },
+  "lint-staged": {
+    "*.js": ["prettier --write", "git add"]
+  }
+}

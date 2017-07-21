@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`markdown-it-table should be able to parse cell with blockquote 1`] = `
+"<table>
+<tr>
+<th>
+<p>Heading 1</p>
+</th>
+<th>
+<p>Heading 2</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>Cell 1</p>
+</td>
+<td>
+<blockquote>
+<p>Blockquote 1</p>
+</blockquote>
+</td>
+</tr>
+<tr>
+<td>
+<blockquote>
+<p>Blockquote 2</p>
+</blockquote>
+</td>
+<td>
+<p>Cell 4</p>
+</td>
+</tr>
+</table>
+"
+`;
+
+exports[`markdown-it-table should be able to parse simple table 1`] = `
+"<table>
+<tr>
+<th>
+<p>Heading 1</p>
+</th>
+<th>
+<p>Heading 2</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>Cell 1</p>
+</td>
+<td>
+<p>Cell 2</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Cell 3</p>
+</td>
+<td>
+<p>Cell 4</p>
+</td>
+</tr>
+</table>
+"
+`;
+
+exports[`markdown-it-table should be able to parse table with redundant indentations 1`] = `
+"<table>
+<tr>
+<th>
+<p>Heading 1</p>
+</th>
+<th>
+<p>Heading 2</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>Cell 1</p>
+</td>
+<td>
+<p>Cell 2</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Cell 3</p>
+</td>
+<td>
+<p>Cell 4</p>
+</td>
+</tr>
+</table>
+"
+`;
