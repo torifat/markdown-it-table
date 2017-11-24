@@ -1,10 +1,16 @@
 {
   "env": {
     "development": {
-      "presets": [["env", { "modules": false }]]
+      "presets": [["env", { "modules": false }]],
+      "plugins": [
+        "add-module-exports"
+      ]
     },
     "test": {
-      "presets": ["env"]
+      "presets": ["env"],
+      "plugins": [
+        "add-module-exports"
+      ]
     }
   }
 }
