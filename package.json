@@ -1,8 +1,13 @@
 {
   "name": "markdown-it-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Plugin for markdown-it markdown parser, adding table with nested block syntax support.",
-  "keywords": ["markdown-it-plugin", "markdown-it", "markdown", "table"],
+  "keywords": [
+    "markdown-it-plugin",
+    "markdown-it",
+    "markdown",
+    "table"
+  ],
   "main": "dist/markdown-it-table.js",
   "typings": "typings.d.ts",
   "license": "MIT",
@@ -13,7 +18,10 @@
     "precommit": "lint-staged",
     "prepublish": "yarn run build"
   },
-  "files": ["dist/", "typings.d.ts"],
+  "files": [
+    "dist/",
+    "typings.d.ts"
+  ],
   "devDependencies": {
     "babel-core": "^6.25.0",
     "babel-loader": "^7.1.1",
@@ -27,6 +35,9 @@
     "webpack": "^3.3.0"
   },
   "lint-staged": {
-    "*.js": ["prettier --write --single-quote --trailing-comma es5", "git add"]
+    "*.js": [
+      "prettier --write --single-quote --trailing-comma es5",
+      "git add"
+    ]
   }
 }
