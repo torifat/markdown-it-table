@@ -6,6 +6,7 @@ module.exports = {
     path: path.resolve('./dist'),
     filename: 'markdown-it-table.js',
     libraryTarget: 'commonjs2',
+    libraryExport: 'default',
   },
   module: {
     rules: [
