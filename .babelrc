@@ -5,6 +5,15 @@
     },
     "test": {
       "presets": ["env"]
+    },
+    "cjs": {
+      "presets": [["env"]],
+      "plugins": ["add-module-exports"],
+      "ignore": ["__tests__"]
+    },
+    "es": {
+      "presets": [["env", { "modules": false }]],
+      "ignore": ["__tests__"]
     }
   }
 }
