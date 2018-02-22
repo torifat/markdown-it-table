@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import markdownIt from 'markdown-it';
-import markdownItTable from '../';
+import { markdownItTable } from '../';
 
 const getMDFromFixture = name => {
   const filename = path.resolve(__dirname, `__fixtures__/${name}.md`);
