@@ -1,3 +1,2 @@
-declare const markdownItTable: any;
-
-export = markdownItTable;
+declare const markdownItTable: (md: any, options: any) => void;
+export const markdownItTable;

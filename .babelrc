@@ -8,7 +8,6 @@
     },
     "cjs": {
       "presets": [["env"]],
-      "plugins": ["add-module-exports"],
       "ignore": ["__tests__"]
     },
     "es": {

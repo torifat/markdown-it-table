@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-table",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "Plugin for markdown-it markdown parser, adding table with nested block syntax support.",
   "keywords": [
     "markdown-it-plugin",
@@ -8,6 +8,10 @@
     "markdown",
     "table"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/torifat/markdown-it-table.git"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "typings": "typings.d.ts",
@@ -29,7 +33,6 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.25.0",
-    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-preset-env": "^1.6.0",
     "husky": "^0.14.3",
     "jest": "^20.0.4",

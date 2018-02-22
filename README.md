@@ -15,7 +15,7 @@ $ yarn add markdown-it-table
 
 ```js
 var md = require('markdown-it')();
-var table = require('markdown-it-table');
+var { markdownItTable } = require('markdown-it-table');
 
-md.use(table [, options]);
+md.use(markdownItTable [, options]);
 ```
