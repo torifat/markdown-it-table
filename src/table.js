@@ -222,8 +222,7 @@ module.exports = function table(state, startLine, endLine, silent) {
 
     token = state.push('tr_open', 'tr', 1);
 
-    let offset = 2;
-    for (i = 0; i < columnCount; i++) {
+    for (let i = 0, offset = 1; i < columnCount; i++) {
       token = state.push('td_open', 'td', 1);
       if (aligns[i]) {
         token.attrs = [['style', 'text-align:' + aligns[i]]];
@@ -234,10 +233,12 @@ module.exports = function table(state, startLine, endLine, silent) {
       // eMarks => line end offsets for fast jumps
       // tShift => offsets of the first non-space characters (tabs not expanded)
       // sCount => indents for each line (tabs expanded)
-      state.bMarks[nextLine] += offset;
-      offset += (columns[i] || '').length - 1;
-      state.eMarks[nextLine] =
-        state.bMarks[nextLine] + (columns[i] || '').trim().length;
+
+      // Move bMarks when first char is ' ' for > to work
+      const shift = columns[i][0] === ' ' ? 1 : 0;
+      state.bMarks[nextLine] += offset + shift;
+      offset = (columns[i] || '').length + (shift ? 0 : 1);
+      state.eMarks[nextLine] = state.bMarks[nextLine] + offset - 1;
       state.lineMax = 1;
       state.md.block.tokenize(state, nextLine, nextLine + 1);
 

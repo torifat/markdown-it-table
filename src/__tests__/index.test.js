@@ -17,7 +17,11 @@ describe('markdown-it-table', () => {
 
   it('should be able to parse simple table', () => {
     const input = getMDFromFixture('simple');
-    // const out = md.parse(input);
+    expect(md.render(input)).toMatchSnapshot();
+  });
+
+  it('should be able to parse complex table', () => {
+    const input = getMDFromFixture('complex');
     expect(md.render(input)).toMatchSnapshot();
   });
 
@@ -28,6 +32,16 @@ describe('markdown-it-table', () => {
 
   it.skip('should be able to parse table with redundant indentations', () => {
     const input = getMDFromFixture('indentation');
+    expect(md.render(input)).toMatchSnapshot();
+  });
+
+  it('should be able to parse table with multiple columns', () => {
+    const input = getMDFromFixture('multi-column');
+    expect(md.render(input)).toMatchSnapshot();
+  });
+
+  it('should be able to parse table without proper spacing', () => {
+    const input = getMDFromFixture('no-spacing');
     expect(md.render(input)).toMatchSnapshot();
   });
 });

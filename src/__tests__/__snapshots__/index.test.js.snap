@@ -34,6 +34,56 @@ exports[`markdown-it-table should be able to parse cell with blockquote 1`] = `
 "
 `;
 
+exports[`markdown-it-table should be able to parse complex table 1`] = `
+"<table>
+<tr>
+<th>
+<p>Tables</p>
+</th>
+<th style=\\"text-align:center\\">
+<p>Are</p>
+</th>
+<th style=\\"text-align:right\\">
+<p>Cool</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>col 1 is</p>
+</td>
+<td style=\\"text-align:center\\">
+<p>left-aligned</p>
+</td>
+<td style=\\"text-align:right\\">
+<p>$1600</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>col 2 is</p>
+</td>
+<td style=\\"text-align:center\\">
+<p>centered</p>
+</td>
+<td style=\\"text-align:right\\">
+<p>$12</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>col 3 is</p>
+</td>
+<td style=\\"text-align:center\\">
+<p>right-aligned</p>
+</td>
+<td style=\\"text-align:right\\">
+<p>$1</p>
+</td>
+</tr>
+</table>
+"
+`;
+
 exports[`markdown-it-table should be able to parse simple table 1`] = `
 "<table>
 <tr>
@@ -64,7 +114,76 @@ exports[`markdown-it-table should be able to parse simple table 1`] = `
 "
 `;
 
+exports[`markdown-it-table should be able to parse table with multiple columns 1`] = `
+"<table>
+<tr>
+<th>
+<p>HDR1</p>
+</th>
+<th>
+<p>HDR2</p>
+</th>
+<th>
+<p>HDR3</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>row1 col1</p>
+</td>
+<td>
+<p>row1 col2</p>
+</td>
+<td>
+<p>row1 col3</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>row2 col1</p>
+</td>
+<td>
+<p>row2 col2</p>
+</td>
+<td>
+<p>row3 col3</p>
+</td>
+</tr>
+</table>
+"
+`;
+
 exports[`markdown-it-table should be able to parse table with redundant indentations 1`] = `
+"<table>
+<tr>
+<th>
+<p>Heading 1</p>
+</th>
+<th>
+<p>Heading 2</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>Cell 1</p>
+</td>
+<td>
+<p>Cell 2</p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Cell 3</p>
+</td>
+<td>
+<p>Cell 4</p>
+</td>
+</tr>
+</table>
+"
+`;
+
+exports[`markdown-it-table should be able to parse table without proper spacing 1`] = `
 "<table>
 <tr>
 <th>
