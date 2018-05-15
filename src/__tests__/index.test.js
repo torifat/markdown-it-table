@@ -44,4 +44,9 @@ describe('markdown-it-table', () => {
     const input = getMDFromFixture('no-spacing');
     expect(md.render(input)).toMatchSnapshot();
   });
+
+  it('should be able to parse table with missing cell', () => {
+    const input = getMDFromFixture('table-missing-cell');
+    expect(md.render(input)).toMatchSnapshot();
+  });
 });

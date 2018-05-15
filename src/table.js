@@ -222,7 +222,7 @@ module.exports = function table(state, startLine, endLine, silent) {
 
     token = state.push('tr_open', 'tr', 1);
 
-    for (let i = 0, offset = 1; i < columnCount; i++) {
+    for (let i = 0, offset = 1; i < columns.length; i++) {
       token = state.push('td_open', 'td', 1);
       if (aligns[i]) {
         token.attrs = [['style', 'text-align:' + aligns[i]]];
