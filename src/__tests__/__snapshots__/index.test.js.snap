@@ -114,6 +114,42 @@ exports[`markdown-it-table should be able to parse simple table 1`] = `
 "
 `;
 
+exports[`markdown-it-table should be able to parse table with missing cell 1`] = `
+"<table>
+<tr>
+<th>
+<p>Header</p>
+</th>
+<th>
+<p>thing</p>
+</th>
+<th>
+<p></p>
+</th>
+</tr>
+<tr>
+<td>
+<p>Cell</p>
+</td>
+<td>
+<p>Cell</p>
+</td>
+<td>
+<p></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>Cell</p>
+</td>
+<td>
+<p></p>
+</td>
+</tr>
+</table>
+"
+`;
+
 exports[`markdown-it-table should be able to parse table with multiple columns 1`] = `
 "<table>
 <tr>
