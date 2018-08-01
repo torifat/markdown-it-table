@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-table",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Plugin for markdown-it markdown parser, adding table with nested block syntax support.",
   "keywords": [
     "markdown-it-plugin",
