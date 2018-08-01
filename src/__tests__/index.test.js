@@ -49,4 +49,9 @@ describe('markdown-it-table', () => {
     const input = getMDFromFixture('table-missing-cell');
     expect(md.render(input)).toMatchSnapshot();
   });
+
+  it('should be able to parse table with empty list', () => {
+    const input = getMDFromFixture('table-empty-list');
+    expect(md.render(input)).toMatchSnapshot();
+  });
 });

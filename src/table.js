@@ -235,7 +235,10 @@ module.exports = function table(state, startLine, endLine, silent) {
       // sCount => indents for each line (tabs expanded)
 
       // Move bMarks when first char is ' ' for > to work
-      const shift = columns[i][0] === ' ' ? 1 : 0;
+      const shift =
+        columns[i][0] === ' ' || /^(\d+\.|\*|-)$/.test(columns[i].trim())
+          ? 1
+          : 0;
       state.bMarks[nextLine] += offset + shift;
       offset = (columns[i] || '').length + (shift ? 0 : 1);
       state.eMarks[nextLine] = state.bMarks[nextLine] + offset - 1;
