@@ -12,6 +12,9 @@
     "type": "git",
     "url": "git+https://github.com/torifat/markdown-it-table.git"
   },
+  "engines": {
+    "node": "*"
+  },
   "main": "dist/cjs/index.js",
   "module": "dist/es/index.js",
   "typings": "typings.d.ts",
