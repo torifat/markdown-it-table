@@ -134,6 +134,22 @@ exports[`markdown-it-table should be able to parse table with empty list 1`] = `
 </tr>
 <tr>
 <td>
+<p></p>
+</td>
+<td>
+<p></p>
+</td>
+</tr>
+<tr>
+<td>
+<p>.</p>
+</td>
+<td>
+<p></p>
+</td>
+</tr>
+<tr>
+<td>
 <p>content 1</p>
 </td>
 <td>
