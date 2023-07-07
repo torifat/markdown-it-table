@@ -1,57 +1,44 @@
-import fs from 'fs';
-import path from 'path';
+import { describe, beforeEach, it } from "vitest";
 
-import markdownIt from 'markdown-it';
-import { markdownItTable } from '../';
+import fs from "node:fs";
+import path from "node:path";
 
-const getMDFromFixture = name => {
+import markdownIt from "markdown-it";
+import { markdownItTable } from "../";
+
+const testMd = (name) => (ctx) => {
   const filename = path.resolve(__dirname, `__fixtures__/${name}.md`);
-  return fs.readFileSync(filename, 'utf8');
+  const input = fs.readFileSync(filename, "utf8");
+  ctx
+    .expect(ctx.md.render(input))
+    .toMatchFileSnapshot(`./__snapshots__/${name}.html`);
 };
 
-describe('markdown-it-table', () => {
-  let md;
-  beforeAll(() => {
-    md = markdownIt('commonmark').use(markdownItTable, {});
+describe("markdown-it-table", () => {
+  beforeEach((ctx) => {
+    ctx.md = markdownIt("commonmark").use(markdownItTable, {});
   });
 
-  it('should be able to parse simple table', () => {
-    const input = getMDFromFixture('simple');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse simple table", testMd("simple"));
 
-  it('should be able to parse complex table', () => {
-    const input = getMDFromFixture('complex');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse complex table", testMd("complex"));
 
-  it('should be able to parse cell with blockquote', () => {
-    const input = getMDFromFixture('blockquote');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse cell with blockquote", testMd("blockquote"));
 
-  it.skip('should be able to parse table with redundant indentations', () => {
-    const input = getMDFromFixture('indentation');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it(
+    "should parse table with redundant indentations",
+    testMd("indentation"),
+  );
 
-  it('should be able to parse table with multiple columns', () => {
-    const input = getMDFromFixture('multi-column');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse table with multiple columns", testMd("multi-column"));
 
-  it('should be able to parse table without proper spacing', () => {
-    const input = getMDFromFixture('no-spacing');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse table without proper spacing", testMd("no-spacing"));
 
-  it('should be able to parse table with missing cell', () => {
-    const input = getMDFromFixture('table-missing-cell');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse table with missing cell", testMd("table-missing-cell"));
 
-  it('should be able to parse table with empty list', () => {
-    const input = getMDFromFixture('table-empty-list');
-    expect(md.render(input)).toMatchSnapshot();
-  });
+  it("should parse table with empty list", testMd("table-empty-list"));
+
+  it.skip("should parse table inside list", testMd("table-inside-list"));
+
+  it("should parse table followed by empty list", testMd("table-followed-by-empty-list"));
 });
