@@ -205,6 +205,7 @@ module.exports = function table(state, startLine, endLine, silent) {
 
   // token     = state.push('tbody_open', 'tbody', 1);
   token.map = tbodyLines = [startLine + 2, 0];
+  const oldLineMax = state.lineMax;
 
   for (nextLine = startLine + 2; nextLine < endLine; nextLine++) {
     if (state.sCount[nextLine] < state.blkIndent) {
@@ -251,6 +252,7 @@ module.exports = function table(state, startLine, endLine, silent) {
     token = state.push('tr_close', 'tr', -1);
   }
   // token = state.push('tbody_close', 'tbody', -1);
+  state.lineMax = oldLineMax;
   token = state.push('table_close', 'table', -1);
 
   tableLines[1] = tbodyLines[1] = nextLine;
