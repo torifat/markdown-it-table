@@ -1,19 +1,31 @@
-version: 2
+version: 2.1
+
 jobs:
   build:
     docker:
-      - image: circleci/node:7.10
+      - image: node:18
+    resource_class: large
+    parallelism: 10
+
     steps:
       - checkout
       - restore_cache:
+          name: Restore pnpm Package Cache
           keys:
-            - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - run: yarn install --pure-lockfile
+            - pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
+      - run:
+          name: Install pnpm package manager
+          command: |
+            corepack enable
+      - run:
+          name: Install Dependencies
+          command: |
+            pnpm install
       - save_cache:
-          key: yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          name: Save pnpm Package Cache
+          key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
           paths:
             - node_modules
-      - run: yarn test
       - deploy:
           name: Publish to npm
           command: |

@@ -1,3 +1,3 @@
 export default {
-  '*.{js}': 'vitest related --run',
+  '*.js': 'vitest related --run',
 }
