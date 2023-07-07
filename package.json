@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-table",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Plugin for markdown-it markdown parser, adding table with nested block syntax support.",
   "keywords": [
     "markdown-it-plugin",
@@ -40,15 +40,14 @@
     "babel-preset-env": "^1.6.1",
     "husky": "^0.14.3",
     "jest": "^20.0.4",
-    "lint-staged": "^7.0.0",
+    "lint-staged": "^13.2.3",
     "markdown-it": "^8.4.1",
     "markdown-it-testgen": "^0.1.4",
     "prettier": "^1.11.1"
   },
   "lint-staged": {
     "*.js": [
-      "prettier --write --single-quote --trailing-comma es5",
-      "git add"
+      "prettier --write --single-quote --trailing-comma es5"
     ]
   }
 }
