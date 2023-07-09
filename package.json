@@ -12,7 +12,7 @@
     "type": "git",
     "url": "https://github.com/torifat/markdown-it-table.git"
   },
-  "packageManager": "pnpm@8.6.6",
+  "packageManager": "pnpm@8.6.7",
   "engines": {
     "node": ">12.6"
   },
