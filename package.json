@@ -47,9 +47,7 @@
     "markdown-it": "^13.0.1",
     "markdown-it-testgen": "^0.1.6",
     "prettier": "^3.0.0",
-    "vitest": "^0.33.0"
-  },
-  "optionalDependencies": {
+    "vitest": "^0.33.0",
     "@vitest/ui": "^0.33.0"
   },
   "lint-staged": {
