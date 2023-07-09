@@ -1,7 +1,7 @@
 // Copied from https://github.com/markdown-it/markdown-it/blob/master/lib/rules_block/table.js
 
-const LIST_RE = /^\s*(\d+\.|\*|-)$/;
-const BLOCKQUOTE_RE = /^ >/;
+const LIST_RE = /^ {0,3}(\d+\.|\*|-)$/;
+const BLOCKQUOTE_RE = /^(?<space> {0,3})>/;
 
 function isSpace(code) {
   switch (code) {
@@ -235,9 +235,8 @@ export default function table(state, startLine, endLine, silent) {
       // sCount => indents for each line (tabs expanded)
 
       let shift = 0, ret;
-      // Move bMarks when first char is ' ' for > to work
-      if (BLOCKQUOTE_RE.test(columns[i])) {
-        shift = 1;
+      if (ret = BLOCKQUOTE_RE.exec(columns[i])) {
+        shift = ret.groups.space.length;
       } else if (ret = LIST_RE.exec(columns[i])) {
         shift = ret.input.length;
       }
@@ -246,7 +245,7 @@ export default function table(state, startLine, endLine, silent) {
       state.tShift[nextLine] = 0;
       state.sCount[nextLine] = 0;
       offset = (columns[i] || "").length + 1;
-      state.eMarks[nextLine] = state.bMarks[nextLine] + offset - 1 - shift;
+      state.eMarks[nextLine] = state.bMarks[nextLine] + offset - shift - 1;
       state.lineMax = 1;
       state.md.block.tokenize(state, nextLine, nextLine + 1);
 

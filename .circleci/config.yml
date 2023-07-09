@@ -26,7 +26,11 @@ jobs:
           key: pnpm-packages-{{ checksum "pnpm-lock.yaml" }}
           paths:
             - node_modules
-      - deploy:
+      - run:
+          name: Test
+          command: |
+            pnpm test:ci
+      - run:
           name: Publish to npm
           command: |
             if [ "${CIRCLE_BRANCH}" == "release" ]; then
