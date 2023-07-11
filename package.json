@@ -19,9 +19,9 @@
   "type": "module",
   "exports": {
     "types": "./typings.d.ts",
-    "require": "./dist/cjs/index.cjs",
-    "import": "./dist/esm/index.mjs",
-    "default": "./dist/cjs/index.cjs"
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.mjs",
+    "default": "./dist/index.cjs"
   },
   "license": "MIT",
   "author": "Rifat Nabi <@rifat>",
@@ -30,10 +30,10 @@
     "test:ci": "vitest --run",
     "clean": "rm -rf ./dist",
     "format": "prettier --write .",
-    "build:esm": "esbuild src/*.js --outdir=dist/esm --format=esm --out-extension:.js=.mjs",
-    "build:cjs": "esbuild src/*.js --outdir=dist/cjs --format=cjs --out-extension:.js=.cjs",
+    "build:esm": "esbuild src/index.js --outfile=dist/index.mjs --format=esm --bundle",
+    "build:cjs": "esbuild src/index.js --outfile=dist/index.cjs --format=cjs --bundle",
     "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
-    "prepublish": "pnpm run build",
+    "prepublish": "pnpm run build && npx publint",
     "prepare": "husky install"
   },
   "files": [
