@@ -17,8 +17,8 @@
     "node": ">12.6"
   },
   "type": "module",
+  "types": "./typings.d.ts",
   "exports": {
-    "types": "./typings.d.ts",
     "require": "./dist/index.cjs",
     "import": "./dist/index.mjs",
     "default": "./dist/index.cjs"
