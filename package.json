@@ -18,11 +18,15 @@
   },
   "type": "module",
   "exports": {
+    "require": {
+      "types": "./typings.d.cts",
+      "default": "./dist/index.cjs"
+    },
     "types": "./typings.d.ts",
-    "require": "./dist/index.cjs",
-    "import": "./dist/index.mjs",
-    "default": "./dist/index.cjs"
+    "import": "./dist/index.mjs"
   },
+  "main": "./dist/index.cjs",
+  "types": "./typings.d.ts",
   "license": "MIT",
   "author": "Rifat Nabi <@rifat>",
   "scripts": {
@@ -38,7 +42,8 @@
   },
   "files": [
     "dist/",
-    "typings.d.ts"
+    "typings.d.ts",
+    "typings.d.cts"
   ],
   "devDependencies": {
     "esbuild": "^0.18.11",
