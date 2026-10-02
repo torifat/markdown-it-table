@@ -246,8 +246,23 @@ export default function table(state, startLine, endLine, silent) {
       state.sCount[nextLine] = 0;
       offset = (columns[i] || "").length + 1;
       state.eMarks[nextLine] = state.bMarks[nextLine] + offset - shift - 1;
-      state.lineMax = 1;
+      const savedLineMax = state.lineMax;
+      const tokensBeforeCell = state.tokens.length;
+      // Block rules use document line indexes, even while parsing one cell.
+      state.lineMax = nextLine + 1;
       state.md.block.tokenize(state, nextLine, nextLine + 1);
+      state.lineMax = savedLineMax;
+      // Stripping a marker or quote prefix must not shift the next cell.
+      state.bMarks[nextLine] -= shift;
+
+      if (state.tokens.length === tokensBeforeCell) {
+        token = state.push("paragraph_open", "p", 1);
+        token = state.push("inline", "", 0);
+        token.content = "";
+        token.map = [nextLine, nextLine + 1];
+        token.children = [];
+        token = state.push("paragraph_close", "p", -1);
+      }
 
       token = state.push("td_close", "td", -1);
     }
