@@ -1,4 +1,8 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": ["src/__tests__/__fixtures__/*.md", "src/__tests__/__snapshots__/*.html"]
+  "ignorePatterns": [
+    "README.md",
+    "src/__tests__/__fixtures__/*.md",
+    "src/__tests__/__snapshots__/*.html"
+  ]
 }
