@@ -33,7 +33,9 @@ describe("markdown-it-table", () => {
 
   it("should parse table with empty list", testMd("table-empty-list"));
 
-  it.skip("should parse table inside list", testMd("table-inside-list"));
+  it("should parse table inside list", testMd("table-inside-list"));
 
   it("should parse table followed by empty list", testMd("table-followed-by-empty-list"));
+
+  it("should parse rows without a leading pipe", testMd("no-leading-pipe"));
 });

@@ -3,6 +3,26 @@
 const LIST_RE = /^ {0,3}(\d+\.|\*|-)$/;
 const BLOCKQUOTE_RE = /^(?<space> {0,3})>/;
 
+// Openers of comments and raw text elements. A browser treats everything after
+// one as part of it until the matching closer.
+const RAW_TEXT_OPEN_RE =
+  /<!--|<(script|style|textarea|title|xmp|iframe|noembed|noframes|plaintext)(?=[\s/>]|$)/gi;
+
+// Whether `html` opens a comment or raw text element that it does not close.
+// A cell ends at the next pipe, so its closer may be in another cell.
+function leavesRawTextOpen(html) {
+  const lower = html.toLowerCase();
+  const opener = new RegExp(RAW_TEXT_OPEN_RE);
+  let match;
+  while ((match = opener.exec(lower))) {
+    const closer = match[1] ? `</${match[1]}` : "-->";
+    const end = lower.indexOf(closer, opener.lastIndex);
+    if (end === -1) return true;
+    opener.lastIndex = end + closer.length;
+  }
+  return false;
+}
+
 function isSpace(code) {
   switch (code) {
     case 0x09:
@@ -13,7 +33,7 @@ function isSpace(code) {
 }
 
 function getLine(state, line) {
-  var pos = state.bMarks[line] + state.blkIndent,
+  var pos = state.bMarks[line] + state.tShift[line],
     max = state.eMarks[line];
 
   return state.src.substr(pos, max - pos);
@@ -60,6 +80,8 @@ function escapedSplit(str) {
     if (pos === max && backTicked) {
       backTicked = false;
       pos = lastBackTick + 1;
+      // The character before `pos` is the backtick, so no escapes are pending.
+      escapes = 0;
     }
 
     ch = str.charCodeAt(pos);
@@ -68,6 +90,58 @@ function escapedSplit(str) {
   result.push(str.substring(lastPos));
 
   return result;
+}
+
+// Splits a trimmed row into cells. Only an unescaped pipe at either end is a
+// delimiter, so `\|` at the end of a row stays in the last cell. A row of a
+// single `|` is one empty cell.
+function splitRow(lineText) {
+  const columns = escapedSplit(lineText);
+  if (columns.length && columns[0] === "") columns.shift();
+  if (columns.length && columns[columns.length - 1] === "") columns.pop();
+  return columns.length ? columns : [""];
+}
+
+// Parses a body cell as block content in a state of its own. Block rules then see
+// only the cell's text: they cannot read the next cell's pipe, and the table's
+// lines keep their original marks for the rules that run after the table.
+function pushCell(state, text, line) {
+  const tokensBeforeCell = state.tokens.length;
+  let isInline = false;
+
+  if (!LIST_RE.test(text)) {
+    const ret = BLOCKQUOTE_RE.exec(text);
+    const content = ret ? text.slice(ret.groups.space.length) : text;
+    const cell = new state.md.block.State(content, state.md, state.env, state.tokens);
+    // Padding before anything but `>` keeps the cell out of the block rules.
+    cell.tShift[0] = 0;
+    cell.sCount[0] = 0;
+    cell.level = state.level;
+    state.md.block.tokenize(cell, 0, cell.lineMax);
+
+    const tokens = state.tokens.slice(tokensBeforeCell);
+    // Raw HTML that stays open past the cell would swallow the rest of the page,
+    // so the cell falls back to inline text, where markdown-it escapes it.
+    isInline = tokens.some(
+      (token) => token.type === "html_block" && leavesRawTextOpen(token.content),
+    );
+    if (isInline) {
+      state.tokens.length = tokensBeforeCell;
+    } else {
+      for (const token of tokens) {
+        if (token.map) token.map = [token.map[0] + line, token.map[1] + line];
+      }
+    }
+  }
+
+  if (state.tokens.length === tokensBeforeCell) {
+    let token = state.push("paragraph_open", "p", 1);
+    token = state.push("inline", "", 0);
+    token.content = isInline ? text.trim() : "";
+    token.map = [line, line + 1];
+    token.children = [];
+    state.push("paragraph_close", "p", -1);
+  }
 }
 
 export default function table(state, startLine, endLine, silent) {
@@ -159,7 +233,7 @@ export default function table(state, startLine, endLine, silent) {
   if (state.sCount[startLine] - state.blkIndent >= 4) {
     return false;
   }
-  columns = escapedSplit(lineText.replace(/^\||\|$/g, ""));
+  columns = splitRow(lineText);
 
   // header row will define an amount of columns in the entire table,
   // and align row shouldn't be smaller than that (the rest of the rows can)
@@ -201,8 +275,17 @@ export default function table(state, startLine, endLine, silent) {
   token = state.push("tr_close", "tr", -1);
   token.map = tbodyLines = [startLine + 2, 0];
 
+  const oldParentType = state.parentType;
+  state.parentType = "table";
+  // A line that starts another block ends the table, as in markdown-it's own tables.
+  const terminatorRules = state.md.block.ruler.getRules("blockquote");
+
   for (nextLine = startLine + 2; nextLine < endLine; nextLine++) {
     if (state.sCount[nextLine] < state.blkIndent) {
+      break;
+    }
+
+    if (terminatorRules.some((rule) => rule(state, nextLine, endLine, true))) {
       break;
     }
 
@@ -213,52 +296,17 @@ export default function table(state, startLine, endLine, silent) {
     if (state.sCount[nextLine] - state.blkIndent >= 4) {
       break;
     }
-    columns = escapedSplit(lineText.replace(/^\||\|$/g, ""));
+    columns = splitRow(lineText);
 
     token = state.push("tr_open", "tr", 1);
 
-    for (let i = 0, offset = 1; i < columns.length; i++) {
+    for (i = 0; i < columns.length; i++) {
       token = state.push("td_open", "td", 1);
       if (aligns[i]) {
         token.attrs = [["style", "text-align:" + aligns[i]]];
       }
 
-      // https://github.com/markdown-it/markdown-it/blob/e6f19eab4204122e85e4a342e0c1c8486ff40c2d/lib/rules_block/state_block.js#L25
-      // bMarks => line begin offsets for fast jumps
-      // eMarks => line end offsets for fast jumps
-      // tShift => offsets of the first non-space characters (tabs not expanded)
-      // sCount => indents for each line (tabs expanded)
-
-      let shift = 0,
-        ret;
-      if ((ret = BLOCKQUOTE_RE.exec(columns[i]))) {
-        shift = ret.groups.space.length;
-      } else if ((ret = LIST_RE.exec(columns[i]))) {
-        shift = ret.input.length;
-      }
-
-      state.bMarks[nextLine] += offset + state.tShift[nextLine] + shift;
-      state.tShift[nextLine] = 0;
-      state.sCount[nextLine] = 0;
-      offset = (columns[i] || "").length + 1;
-      state.eMarks[nextLine] = state.bMarks[nextLine] + offset - shift - 1;
-      const savedLineMax = state.lineMax;
-      const tokensBeforeCell = state.tokens.length;
-      // Block rules use document line indexes, even while parsing one cell.
-      state.lineMax = nextLine + 1;
-      state.md.block.tokenize(state, nextLine, nextLine + 1);
-      state.lineMax = savedLineMax;
-      // Stripping a marker or quote prefix must not shift the next cell.
-      state.bMarks[nextLine] -= shift;
-
-      if (state.tokens.length === tokensBeforeCell) {
-        token = state.push("paragraph_open", "p", 1);
-        token = state.push("inline", "", 0);
-        token.content = "";
-        token.map = [nextLine, nextLine + 1];
-        token.children = [];
-        token = state.push("paragraph_close", "p", -1);
-      }
+      pushCell(state, columns[i], nextLine);
 
       token = state.push("td_close", "td", -1);
     }
@@ -267,7 +315,8 @@ export default function table(state, startLine, endLine, silent) {
   }
   token = state.push("table_close", "table", -1);
 
-  tbodyLines[1] = nextLine;
+  tableLines[1] = tbodyLines[1] = nextLine;
+  state.parentType = oldParentType;
   state.line = nextLine;
   return true;
 }

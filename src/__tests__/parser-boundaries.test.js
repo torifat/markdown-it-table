@@ -1,32 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { spawnSync } from "node:child_process";
-import { fileURLToPath } from "node:url";
-
-const root = fileURLToPath(new URL("../..", import.meta.url));
-const plugin = new URL("../index.js", import.meta.url).href;
-
-// A parser regression must fail the test without exhausting the test runner.
-function renderInChild(input, preset) {
-  const result = spawnSync(
-    process.execPath,
-    [
-      "--max-old-space-size=128",
-      "--input-type=module",
-      "--eval",
-      `import MarkdownIt from "markdown-it";
-       import { markdownItTable } from ${JSON.stringify(plugin)};
-       process.stdout.write(new MarkdownIt(${JSON.stringify(preset)})
-         .disable("table").use(markdownItTable).render(${JSON.stringify(input)}));`,
-    ],
-    { cwd: root, encoding: "utf8", timeout: 5000, maxBuffer: 1024 * 1024 },
-  );
-
-  expect(result.error, result.stderr).toBeUndefined();
-  expect(result.signal, result.stderr).toBeNull();
-  expect(result.status, result.stderr).toBe(0);
-  return result.stdout;
-}
+import { renderInChild } from "./support/child.js";
 
 describe.each(["commonmark", "default"])("cell parser boundaries (%s)", (preset) => {
   it.each(["-", "*", "+", "1.", "1)"])(
