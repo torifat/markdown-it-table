@@ -4,6 +4,9 @@
 
 > Plugin for [markdown-it](https://github.com/markdown-it/markdown-it) markdown parser, adding table with nested block syntax support.
 
+> [!WARNING]
+> These tables are neither CommonMark nor GFM. CommonMark has no table syntax, and GFM cells hold inline content only, so GitHub renders `| - item |` as the text `- item` where this plugin renders a list. The HTML differs as well, as listed under [Differences from markdown-it's table](#differences-from-markdown-its-table).
+
 ## Install
 
 ```bash
