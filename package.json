@@ -36,6 +36,7 @@
     "clean": "rm -rf ./dist",
     "format": "oxfmt",
     "format:check": "oxfmt --check",
+    "lint:actions": "actionlint && zizmor .github/workflows",
     "build:esm": "esbuild src/index.js --outfile=dist/index.mjs --format=esm --bundle",
     "build:cjs": "esbuild src/index.js --outfile=dist/index.cjs --format=cjs --bundle",
     "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",

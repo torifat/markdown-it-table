@@ -21,6 +21,8 @@ jobs:
         with:
           node-version-file: .node-version
           cache: pnpm
+      - uses: jdx/mise-action@2d8d4cafcbd33be2ea37d2b6f5ad595363d1f1ca # v5.1.1
       - run: pnpm install --frozen-lockfile
       - run: pnpm format:check
+      - run: pnpm lint:actions
       - run: pnpm test:ci

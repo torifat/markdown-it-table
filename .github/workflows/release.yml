@@ -9,7 +9,8 @@ permissions:
 
 jobs:
   test:
-    uses: ./.github/workflows/ci.yml
+    # actionlint 1.7.12 rejects the `$/` self-repository syntax that zizmor suggests.
+    uses: ./.github/workflows/ci.yml # zizmor: ignore[self-repository]
 
   publish:
     needs: test
