@@ -37,7 +37,7 @@
     "build:esm": "esbuild src/index.js --outfile=dist/index.mjs --format=esm --bundle",
     "build:cjs": "esbuild src/index.js --outfile=dist/index.cjs --format=cjs --bundle",
     "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
-    "prepublish": "pnpm run build && publint",
+    "prepublishOnly": "pnpm run build && publint",
     "prepare": "husky install"
   },
   "files": [
