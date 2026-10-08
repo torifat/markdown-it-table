@@ -9,9 +9,7 @@ import { markdownItTable } from "../";
 const testMd = (name) => async (ctx) => {
   const filename = path.resolve(__dirname, `__fixtures__/${name}.md`);
   const input = fs.readFileSync(filename, "utf8");
-  await ctx
-    .expect(ctx.md.render(input))
-    .toMatchFileSnapshot(`./__snapshots__/${name}.html`);
+  await ctx.expect(ctx.md.render(input)).toMatchFileSnapshot(`./__snapshots__/${name}.html`);
 };
 
 describe("markdown-it-table", () => {
@@ -25,10 +23,7 @@ describe("markdown-it-table", () => {
 
   it("should parse cell with blockquote", testMd("blockquote"));
 
-  it(
-    "should parse table with redundant indentations",
-    testMd("indentation"),
-  );
+  it("should parse table with redundant indentations", testMd("indentation"));
 
   it("should parse table with multiple columns", testMd("multi-column"));
 

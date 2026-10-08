@@ -117,12 +117,7 @@ export default function table(state, startLine, endLine, silent) {
   while (pos < state.eMarks[nextLine]) {
     ch = state.src.charCodeAt(pos);
 
-    if (
-      ch !== 0x7c /* | */ &&
-      ch !== 0x2d /* - */ &&
-      ch !== 0x3a /* : */ &&
-      !isSpace(ch)
-    ) {
+    if (ch !== 0x7c /* | */ && ch !== 0x2d /* - */ && ch !== 0x3a /* : */ && !isSpace(ch)) {
       return false;
     }
 
@@ -234,10 +229,11 @@ export default function table(state, startLine, endLine, silent) {
       // tShift => offsets of the first non-space characters (tabs not expanded)
       // sCount => indents for each line (tabs expanded)
 
-      let shift = 0, ret;
-      if (ret = BLOCKQUOTE_RE.exec(columns[i])) {
+      let shift = 0,
+        ret;
+      if ((ret = BLOCKQUOTE_RE.exec(columns[i]))) {
         shift = ret.groups.space.length;
-      } else if (ret = LIST_RE.exec(columns[i])) {
+      } else if ((ret = LIST_RE.exec(columns[i]))) {
         shift = ret.input.length;
       }
 

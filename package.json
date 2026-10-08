@@ -3,20 +3,25 @@
   "version": "4.1.3",
   "description": "Plugin for markdown-it markdown parser, adding table with nested block syntax support.",
   "keywords": [
-    "markdown-it-plugin",
-    "markdown-it",
     "markdown",
+    "markdown-it",
+    "markdown-it-plugin",
     "table"
   ],
+  "license": "MIT",
+  "author": "Rifat Nabi <@rifat>",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/torifat/markdown-it-table.git"
   },
-  "packageManager": "pnpm@12.10.1+sha512.ba40a37eb1a370d60fea8c4cf1d364c13bcccef518e98ad2bcee954f539d38da37458e58261a3fa55e06523450ea0ffff9f497b135be41f2c15c1642bacace6c",
-  "engines": {
-    "node": ">12.6"
-  },
+  "files": [
+    "dist/",
+    "typings.d.ts",
+    "typings.d.cts"
+  ],
   "type": "module",
+  "main": "./dist/index.cjs",
+  "types": "./typings.d.ts",
   "exports": {
     "require": {
       "types": "./typings.d.cts",
@@ -25,26 +30,18 @@
     "types": "./typings.d.ts",
     "import": "./dist/index.mjs"
   },
-  "main": "./dist/index.cjs",
-  "types": "./typings.d.ts",
-  "license": "MIT",
-  "author": "Rifat Nabi <@rifat>",
   "scripts": {
     "test": "vitest",
     "test:ci": "vitest --run",
     "clean": "rm -rf ./dist",
-    "format": "prettier --write .",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "build:esm": "esbuild src/index.js --outfile=dist/index.mjs --format=esm --bundle",
     "build:cjs": "esbuild src/index.js --outfile=dist/index.cjs --format=cjs --bundle",
     "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
     "prepublishOnly": "pnpm run build && publint",
     "prepare": "husky install"
   },
-  "files": [
-    "dist/",
-    "typings.d.ts",
-    "typings.d.cts"
-  ],
   "devDependencies": {
     "@vitest/ui": "^5.0.3",
     "esbuild": "^0.28.2",
@@ -52,11 +49,12 @@
     "lint-staged": "^17.6.0",
     "markdown-it": "^15.0.2",
     "markdown-it-testgen": "^0.1.6",
-    "prettier": "^3.0.3",
+    "oxfmt": "^0.72.0",
     "publint": "^0.3.25",
     "vitest": "^5.0.3"
   },
-  "lint-staged": {
-    "*.{js,css,md}": "prettier --write"
-  }
+  "engines": {
+    "node": ">12.6"
+  },
+  "packageManager": "pnpm@12.10.1+sha512.ba40a37eb1a370d60fea8c4cf1d364c13bcccef518e98ad2bcee954f539d38da37458e58261a3fa55e06523450ea0ffff9f497b135be41f2c15c1642bacace6c"
 }
