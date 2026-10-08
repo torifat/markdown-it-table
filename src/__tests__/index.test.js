@@ -33,6 +33,8 @@ describe("markdown-it-table", () => {
 
   it("should parse table with empty list", testMd("table-empty-list"));
 
+  it("should parse block syntax in padded cells", testMd("padded-cells"));
+
   it("should parse table inside list", testMd("table-inside-list"));
 
   it("should parse table followed by empty list", testMd("table-followed-by-empty-list"));

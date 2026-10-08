@@ -91,7 +91,7 @@ describe("parser state", () => {
   );
 
   it("keeps a list around a table tight", () => {
-    for (const row of ["| x ||", "|| y |", "| | |", "| x | y |"]) {
+    for (const row of ["| x ||", "|| y |", "| | |", "| x | y |", "| - x ||", "| > q | |"]) {
       const html = parsers
         .default()
         .render(`- before\n- | a | b |\n  | - | - |\n  ${row}\n- after\n`);
