@@ -38,6 +38,40 @@ The plugin parses each body cell as markdown blocks, so a cell can hold a list, 
 
 renders as
 
+<table>
+<tr>
+<th>
+<p>Syntax</p>
+</th>
+<th>
+<p>Cell</p>
+</th>
+</tr>
+<tr>
+<td>
+<p>List</p>
+</td>
+<td>
+<ul>
+<li>item</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>
+<p>Quote</p>
+</td>
+<td>
+<blockquote>
+<p>quoted text</p>
+</blockquote>
+</td>
+</tr>
+</table>
+
+<details>
+<summary>HTML</summary>
+
 ```html
 <table>
 <tr>
@@ -70,6 +104,8 @@ renders as
 </tr>
 </table>
 ```
+
+</details>
 
 ### Cells
 
