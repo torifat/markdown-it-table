@@ -215,11 +215,14 @@ describe("with html: true", () => {
     },
   );
 
-  it("keeps an HTML block that closes inside its cell", () => {
-    const html = md.render("|a|b|\n|-|-|\n|<!-- c -->|y|\n");
+  it.each(["|<!-- c -->|y|", "| <!-- c --> | y |"])(
+    "keeps the HTML block in %j to its cell",
+    (row) => {
+      const html = md.render(`|a|b|\n|-|-|\n${row}\n`);
 
-    expect(html).toContain("<td>\n<!-- c --></td>");
-  });
+      expect(html).toContain("<td>\n<!-- c --></td>");
+    },
+  );
 });
 
 describe("a line that starts another block", () => {
@@ -286,13 +289,16 @@ describe("cell text", () => {
     expect(mismatches).toEqual([]);
   });
 
-  it("keeps a reference definition to its own cell", () => {
-    const env = {};
-    const html = parsers.default().render("|a|b|\n|-|-|\n|[r]: /x|y|\n\n[r]\n", env);
+  it.each(["|[r]: /x|y|", "| [r]: /x | y |"])(
+    "keeps the reference definition in %j to its cell",
+    (row) => {
+      const env = {};
+      const html = parsers.default().render(`|a|b|\n|-|-|\n${row}\n\n[r]\n`, env);
 
-    expect(env.references).toEqual({ R: { href: "/x", title: "" } });
-    expect(html).toContain('<a href="/x">r</a>');
-  });
+      expect(env.references).toEqual({ R: { href: "/x", title: "" } });
+      expect(html).toContain('<a href="/x">r</a>');
+    },
+  );
 });
 
 describe("reference labels", () => {

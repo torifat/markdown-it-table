@@ -1,7 +1,6 @@
 // Copied from https://github.com/markdown-it/markdown-it/blob/master/lib/rules_block/table.js
 
-const LIST_RE = /^ {0,3}(\d+\.|\*|-)$/;
-const BLOCKQUOTE_RE = /^(?<space> {0,3})>/;
+const LIST_MARKER_RE = /^(?:[*+-]|\d+[.)])$/;
 
 // Openers of comments and raw text elements. A browser treats everything after
 // one as part of it until the matching closer.
@@ -30,6 +29,16 @@ function isSpace(code) {
       return true;
   }
   return false;
+}
+
+// Strips spaces and tabs from both ends. Other whitespace, such as NBSP, is
+// content to markdown, so it stays.
+function trimPadding(text) {
+  let start = 0;
+  let end = text.length;
+  while (start < end && isSpace(text.charCodeAt(start))) start++;
+  while (end > start && isSpace(text.charCodeAt(end - 1))) end--;
+  return text.slice(start, end);
 }
 
 function getLine(state, line) {
@@ -107,15 +116,13 @@ function splitRow(lineText) {
 // lines keep their original marks for the rules that run after the table.
 function pushCell(state, text, line) {
   const tokensBeforeCell = state.tokens.length;
-  let isInline = false;
+  // A cell holding only a list marker is text, as in markdown-it's built-in tables.
+  let isInline = LIST_MARKER_RE.test(text.trim());
 
-  if (!LIST_RE.test(text)) {
-    const ret = BLOCKQUOTE_RE.exec(text);
-    const content = ret ? text.slice(ret.groups.space.length) : text;
-    const cell = new state.md.block.State(content, state.md, state.env, state.tokens);
-    // Padding before anything but `>` keeps the cell out of the block rules.
-    cell.tShift[0] = 0;
-    cell.sCount[0] = 0;
+  if (!isInline) {
+    // Cell padding aligns columns, so block rules see the cell without it, and a
+    // padded cell never becomes an indented code block.
+    const cell = new state.md.block.State(trimPadding(text), state.md, state.env, state.tokens);
     cell.level = state.level;
     state.md.block.tokenize(cell, 0, cell.lineMax);
 
