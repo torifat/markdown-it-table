@@ -10,9 +10,9 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/torifat/markdown-it-table.git"
+    "url": "git+https://github.com/torifat/markdown-it-table.git"
   },
-  "packageManager": "pnpm@8.6.7",
+  "packageManager": "pnpm@12.10.1+sha512.ba40a37eb1a370d60fea8c4cf1d364c13bcccef518e98ad2bcee954f539d38da37458e58261a3fa55e06523450ea0ffff9f497b135be41f2c15c1642bacace6c",
   "engines": {
     "node": ">12.6"
   },
@@ -37,7 +37,7 @@
     "build:esm": "esbuild src/index.js --outfile=dist/index.mjs --format=esm --bundle",
     "build:cjs": "esbuild src/index.js --outfile=dist/index.cjs --format=cjs --bundle",
     "build": "pnpm run clean && pnpm run build:esm && pnpm run build:cjs",
-    "prepublish": "pnpm run build && npx publint",
+    "prepublish": "pnpm run build && publint",
     "prepare": "husky install"
   },
   "files": [
@@ -46,14 +46,15 @@
     "typings.d.cts"
   ],
   "devDependencies": {
-    "@vitest/ui": "^0.34.4",
-    "esbuild": "^0.19.3",
-    "husky": "^8.0.3",
-    "lint-staged": "^14.0.1",
-    "markdown-it": "^13.0.1",
+    "@vitest/ui": "^5.0.3",
+    "esbuild": "^0.28.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^17.6.0",
+    "markdown-it": "^15.0.2",
     "markdown-it-testgen": "^0.1.6",
     "prettier": "^3.0.3",
-    "vitest": "^0.34.4"
+    "publint": "^0.3.25",
+    "vitest": "^5.0.3"
   },
   "lint-staged": {
     "*.{js,css,md}": "prettier --write"
