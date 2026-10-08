@@ -6,10 +6,10 @@ import path from "node:path";
 import markdownIt from "markdown-it";
 import { markdownItTable } from "../";
 
-const testMd = (name) => (ctx) => {
+const testMd = (name) => async (ctx) => {
   const filename = path.resolve(__dirname, `__fixtures__/${name}.md`);
   const input = fs.readFileSync(filename, "utf8");
-  ctx
+  await ctx
     .expect(ctx.md.render(input))
     .toMatchFileSnapshot(`./__snapshots__/${name}.html`);
 };
